@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Player from "../Components/player";
 import template1 from "../Components/img/1.png"; // import the img
 import template2 from "../Components/img/2.png";
 import template3 from "../Components/img/3.png";
@@ -8,8 +9,22 @@ import template6 from "../Components/img/6.png";
 
 class Parent extends Component {
   currentPlayer = 0; // the play turn
-
-  NewGame = () => {}; // start a new game
+  // start a new game
+  NewGame = () => {
+    // this.setState((prevState) => {
+    //   return {
+    //     targetScore: (this.state.targetScore = 100),
+    //     randomNumber1: (this.state.randomNumber1 = 0),
+    //     randomNumber2: (this.state.randomNumber2 = 0),
+    //     playersData: (this.state.playersData[0].counter = 0),
+    //     playersData: (this.state.playersData[0].text = "plyer 1"),
+    //     playersData: (this.state.playersData[0].totalScore = 0),
+    //     playersData: (this.state.playersData[1].counter = 0),
+    //     playersData: (this.state.playersData[1].text = "plyer 2"),
+    //     playersData: (this.state.playersData[1].totalScore = 0),
+    //   };
+    // });
+  };
 
   RoleDice = (e) => {
     // pick 1 a random num 1-6
@@ -26,38 +41,40 @@ class Parent extends Component {
   };
 
   HandleHold = (e) => {
-    this.state.playersData[this.currentPlayer].totalScore += // total += counter => add the current to total
-      this.state.playersData[this.currentPlayer].counter;
+    if (this.state.playersData[this.currentPlayer].counter > 0) {
+      this.state.playersData[this.currentPlayer].totalScore += // total += counter => add the current to total
+        this.state.playersData[this.currentPlayer].counter;
 
-    this.state.playersData[this.currentPlayer].counter = 0; // counter =0
+      this.state.playersData[this.currentPlayer].counter = 0; // counter =0
 
-    this.setState({
-      playersData: this.state.playersData, // set the new data (counter = 0 && new total) to playersData (array of obj)
-    });
-    if (
-      this.state.playersData[this.currentPlayer].totalScore ==
-      this.state.targetScore
-    ) {
-      this.state.playersData[this.currentPlayer].text = "W I N N E R";
-    } else if (
-      this.state.playersData[this.currentPlayer].totalScore >
-      this.state.targetScore
-    ) {
-      this.state.playersData[this.currentPlayer].text = "L O S E";
-    }
-    this.setState({
-      playersData: this.state.playersData, // set the win/ lose word in player data
-    });
-    switch (
-      this.currentPlayer // switch turn
-    ) {
-      case 1: {
-        this.currentPlayer = 0;
-        break;
+      this.setState({
+        playersData: this.state.playersData, // set the new data (counter = 0 && new total) to playersData (array of obj)
+      });
+      if (
+        this.state.playersData[this.currentPlayer].totalScore ==
+        this.state.targetScore
+      ) {
+        this.state.playersData[this.currentPlayer].text = "W I N N E R";
+      } else if (
+        this.state.playersData[this.currentPlayer].totalScore >
+        this.state.targetScore
+      ) {
+        this.state.playersData[this.currentPlayer].text = "L O S E";
       }
-      case 0: {
-        this.currentPlayer = 1;
-        break;
+      this.setState({
+        playersData: this.state.playersData, // set the win/ lose word in player data
+      });
+      switch (
+        this.currentPlayer // switch turn
+      ) {
+        case 1: {
+          this.currentPlayer = 0;
+          break;
+        }
+        case 0: {
+          this.currentPlayer = 1;
+          break;
+        }
       }
     }
   };
@@ -86,6 +103,7 @@ class Parent extends Component {
   render() {
     return (
       <>
+        <Player />
         <div className="container">
           <div className="player1">
             <h1>{this.state.playersData[0].text}</h1>
